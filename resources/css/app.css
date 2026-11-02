@@ -1,0 +1,221 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --animate-toast-in: toast-in 0.25s ease-out;
+    --animate-dropdown-in: dropdown-in 0.15s ease-out;
+    --animate-fade-up: fade-up 0.35s ease-out both;
+
+    @keyframes toast-in {
+        from { opacity: 0; transform: translateY(0.5rem) scale(0.98); }
+        to { opacity: 1; transform: none; }
+    }
+    @keyframes dropdown-in {
+        from { opacity: 0; transform: translateY(-0.25rem); }
+        to { opacity: 1; transform: none; }
+    }
+    @keyframes fade-up {
+        from { opacity: 0; transform: translateY(0.5rem); }
+        to { opacity: 1; transform: none; }
+    }
+}
+
+@layer base {
+    /* Chart colors, fixed per occasion (slot = its position in config/ootd.php). */
+    :root {
+        --series-1: #2a78d6;
+        --series-2: #eb6834;
+        --series-3: #1baf7a;
+        --series-4: #eda100;
+        --series-5: #e87ba4;
+        --series-6: #008300;
+        --series-7: #6250d6;
+        --series-8: #e34948;
+        --series-other: #d6d3d1;
+    }
+
+    .dark {
+        --series-1: #3987e5;
+        --series-2: #d95926;
+        --series-3: #199e70;
+        --series-4: #c98500;
+        --series-5: #d55181;
+        --series-6: #008300;
+        --series-7: #9085e9;
+        --series-8: #e66767;
+        --series-other: #57534e;
+    }
+
+    ::selection {
+        @apply bg-rose-200 text-rose-950;
+    }
+
+    body {
+        text-rendering: optimizeLegibility;
+    }
+
+    dialog::backdrop {
+        @apply bg-stone-950/75 backdrop-blur-sm;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *, ::before, ::after {
+            animation-duration: 0.01ms !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+}
+
+@layer components {
+    .toast-in { @apply animate-toast-in; }
+    .dropdown-in { @apply animate-dropdown-in; }
+    .fade-up { @apply animate-fade-up; }
+
+    .field {
+        @apply block w-full rounded-lg border border-stone-300 bg-white px-3.5 py-2.5 text-sm text-stone-900
+            placeholder:text-stone-400 focus:border-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-500/25
+            dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100 dark:placeholder:text-stone-500;
+    }
+
+    .label {
+        @apply mb-1.5 block text-sm font-medium text-stone-700 dark:text-stone-300;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger {
+        @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold
+            transition focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/50 focus-visible:ring-offset-2
+            focus-visible:ring-offset-stone-50 dark:focus-visible:ring-offset-stone-950;
+    }
+
+    .btn-primary {
+        @apply bg-rose-600 text-white shadow-sm shadow-rose-600/25 hover:bg-rose-700;
+    }
+
+    .btn-secondary {
+        @apply border border-stone-300 bg-white text-stone-800 hover:bg-stone-100
+            dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100 dark:hover:bg-stone-800;
+    }
+
+    .btn-danger {
+        @apply bg-red-600 text-white hover:bg-red-700;
+    }
+
+    .card {
+        @apply rounded-2xl border border-stone-200 bg-white shadow-sm shadow-stone-900/[0.03] dark:border-stone-800 dark:bg-stone-900;
+    }
+
+    .error-text {
+        @apply mt-1.5 text-sm text-red-600 dark:text-red-400;
+    }
+
+    .chip {
+        @apply inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-stone-300 bg-white px-3.5 py-1.5
+            text-sm font-medium text-stone-700 transition hover:border-stone-400
+            dark:border-stone-700 dark:bg-stone-900 dark:text-stone-300 dark:hover:border-stone-600;
+    }
+
+    .chip[aria-current='true'],
+    input:checked + .chip {
+        @apply border-rose-600 bg-rose-50 text-rose-700 dark:border-rose-500 dark:bg-rose-500/10 dark:text-rose-300;
+    }
+
+    input:focus-visible + .chip {
+        @apply ring-2 ring-rose-500/50;
+    }
+
+    .pill {
+        @apply inline-flex items-center gap-1 rounded-full bg-stone-100 px-2.5 py-1 text-xs font-medium text-stone-600
+            dark:bg-stone-800 dark:text-stone-300;
+    }
+
+    .app-canvas,
+    .landing-canvas {
+        background-color: #faf7f4;
+        background-image: radial-gradient(ellipse at 92% 0%, rgb(251 113 133 / 8%), transparent 34%),
+            radial-gradient(ellipse at 0% 45%, rgb(251 146 60 / 5%), transparent 32%);
+    }
+
+    .dark .app-canvas,
+    .dark .landing-canvas {
+        background-color: #0c0a09;
+        background-image: radial-gradient(ellipse at 92% 0%, rgb(190 24 93 / 12%), transparent 34%),
+            radial-gradient(ellipse at 0% 45%, rgb(194 65 12 / 7%), transparent 32%);
+    }
+
+    .app-sidebar {
+        background-color: rgb(255 255 255 / 92%);
+        box-shadow: 10px 0 40px rgb(41 37 36 / 3%);
+        backdrop-filter: blur(18px);
+    }
+
+    .dark .app-sidebar {
+        background-color: rgb(28 25 23 / 94%);
+        box-shadow: 10px 0 40px rgb(0 0 0 / 14%);
+    }
+
+    .app-topbar {
+        background-color: rgb(250 247 244 / 82%);
+        backdrop-filter: blur(18px);
+    }
+
+    .dark .app-topbar {
+        background-color: rgb(12 10 9 / 82%);
+    }
+
+    .nav-link {
+        @apply flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition duration-200;
+    }
+
+    .nav-link-active {
+        @apply bg-gradient-to-r from-rose-50 to-orange-50 text-rose-800 shadow-sm shadow-rose-900/[0.04]
+            dark:from-rose-500/15 dark:to-orange-500/10 dark:text-rose-200;
+    }
+
+    .page-title {
+        @apply text-2xl font-semibold tracking-[-0.035em] text-stone-900 sm:text-3xl dark:text-stone-50;
+    }
+
+    .page-subtitle {
+        @apply mt-1.5 max-w-2xl text-sm leading-relaxed text-stone-500 sm:text-base dark:text-stone-400;
+    }
+
+    .card {
+        @apply rounded-[1.35rem] border border-white/80 bg-white/90 shadow-[0_10px_40px_rgba(55,35,25,0.055)] backdrop-blur-sm
+            dark:border-stone-800 dark:bg-stone-900/90 dark:shadow-[0_12px_40px_rgba(0,0,0,0.2)];
+    }
+
+    .btn-primary {
+        @apply rounded-xl bg-gradient-to-r from-rose-600 to-rose-500 shadow-md shadow-rose-900/15 transition duration-200
+            hover:-translate-y-0.5 hover:from-rose-700 hover:to-orange-600 hover:shadow-lg hover:shadow-rose-900/20;
+    }
+
+    .btn-secondary {
+        @apply rounded-xl border-stone-200 bg-white/80 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-rose-200 hover:bg-rose-50/70
+            dark:border-stone-700 dark:bg-stone-900/80 dark:hover:border-rose-500/30 dark:hover:bg-rose-500/10;
+    }
+
+    .field {
+        @apply rounded-xl border-stone-200 bg-white/80 shadow-sm transition duration-200 focus:bg-white focus:shadow-md focus:shadow-rose-900/[0.04]
+            dark:border-stone-700 dark:bg-stone-950/70 dark:focus:bg-stone-950;
+    }
+
+    .wardrobe-card {
+        @apply transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-stone-900/10 dark:hover:shadow-black/30;
+    }
+
+    .empty-state {
+        background-image: radial-gradient(ellipse at 50% 0%, rgb(251 113 133 / 7%), transparent 55%);
+    }
+
+    .dark .empty-state {
+        background-image: radial-gradient(ellipse at 50% 0%, rgb(190 24 93 / 9%), transparent 55%);
+    }
+}
